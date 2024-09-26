@@ -1,0 +1,2 @@
+# blocklist.py
+BLOCKLIST = set()

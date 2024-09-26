@@ -1,7 +1,7 @@
 
 import secrets
 from flask import Flask, render_template, jsonify, request, current_app
-from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt, create_refresh_token, jwt_required, get_jwt_identity
 
 app = Flask(__name__)
 
@@ -12,6 +12,9 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 86400 # expires after 1 day
 
 
 jwt = JWTManager(app)
+
+
+from blocklist import BLOCKLIST
 
 class User(object):
     users = [
@@ -56,11 +59,20 @@ def login():
     
     return jsonify({"is_logged": is_logged, "access_token": access_token, "user": login}), 401
 
+# Logout method 
+@app.route('/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    jti = get_jwt()['jti']
+    BLOCKLIST.add(jti)
+    return jsonify({"msg": "Successfully logged out"}), 200
+
 
 @app.route('/get-users')
 @jwt_required()
 def get_users():
-    return jsonify({'users': User().get()}), 200
+    current_user = get_jwt_identity()
+    return jsonify({'users': User().get(), 'current_user': current_user}), 200
 
 """@app.route('/refresh-token')
 @jwt_required(refresh=True)
