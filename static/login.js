@@ -26,6 +26,9 @@ export function makeLogin(form){
             localStorage.setItem('user_is_logged', data.is_logged)
             localStorage.setItem('access_token', data.access_token)
             localStorage.setItem('user', JSON.stringify(data.user))
+            const username = document.getElementById('username')
+            username.style.display = 'block'
+            username.innerText = data.user.name
             //alertSM.innerHTML = `<p class="alert alert-success">${data.user.name} you've logged successfully </p>`
             console.log(localStorage.getItem('user'))
             displayUsers()
