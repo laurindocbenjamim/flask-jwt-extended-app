@@ -41,6 +41,15 @@ class User(object):
             
 
 
+@jwt.token_in_blocklist_loader
+def check_if_token_in_blocklist(jwt_header, jwt_payload):
+    jti = jwt_payload['jti']
+    return jti in BLOCKLIST
+
+@jwt.revoked_token_loader
+def revoked_token_callback(jwt_header, jwt_payload):
+    return jsonify({"msg": "The token has been revoked"}), 401
+
 
 @app.route('/', methods=['GET'])
 def index():

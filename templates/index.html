@@ -182,7 +182,7 @@
         <nav class="nav nav-masthead justify-content-center float-md-end">
           <a class="nav-link fw-bold py-1 px-0 active" aria-current="page" href="#">Home</a>
           <a class="nav-link fw-bold py-1 px-0" href="#">Features</a>
-          <a class="nav-link fw-bold py-1 px-0" href="#">Contact</a>
+          <a class="nav-link fw-bold py-1 px-0" href="#" id="logout">Logout</a>
         </nav>
       </div>
     </header>
@@ -199,10 +199,13 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-
+    <script type="module" src="{{ url_for('static', filename='app.js')}}"></script>
+    <!--<script src="{{ url_for('static', filename='my_fetch.js')}}"></script>
+    <script src="{{ url_for('static', filename='logout.js')}}"></script>
+    <script src="{{ url_for('static', filename='events.js')}}"></script>-->
 </body>
 
-
+<!--
 <script>
   
   
@@ -226,7 +229,7 @@
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
-
+    
     const formData = new FormData(form)
 
     if (formData.get('email') == '') {
@@ -235,7 +238,7 @@
       alertSM.innerHTML = '<p class="alert alert-danger">Password is required</p>'
     } else {
       alertSM.innerHTML = ''
-
+      
       fetch(
         `${window.location.origin}/login`,
         {
@@ -250,6 +253,7 @@
             localStorage.setItem('user_is_logged', data.is_logged)
             localStorage.setItem('access_token', data.access_token)
             localStorage.setItem('user', JSON.stringify(data.user))
+            console.log(data.access_token)
             //alertSM.innerHTML = `<p class="alert alert-success">${data.user.name} you've logged successfully </p>`
             console.log(localStorage.getItem('user'))
             displayUsers()
@@ -321,11 +325,11 @@
 
   }
 
-  const cancelButton = document.querySelector("#cancel");
+  /*const cancelButton = document.querySelector("#cancel");
   cancelButton.addEventListener("click", () => {
     controller.abort();
     console.log("Canceled fetch");
-  });
+  });*/
 
 
 
@@ -366,7 +370,7 @@
   }
 
   async function displayUsers() {
-    const access_token = localStorage.getItem('access_token')
+    var access_token = localStorage.getItem('access_token')
     const user = localStorage.getItem('user')
         
     if(access_token === null | access_token === ''){
@@ -374,28 +378,24 @@
       alert("Token was not found")
       return
     }
-
+    access_token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcyNzM5NDQ1NywianRpIjoiMDU5NWRhYzctYzUzMy00OTYxLTk2NTEtNDc4MzUwM2JhZTU1IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImVtYWlsQHRlc3QuY29tIiwibmJmIjoxNzI3Mzk0NDU3LCJjc3JmIjoiNGE3NzlmNDktNmM5YS00ZDQzLWI3MGEtYWIzNzcwMWViMTljIiwiZXhwIjoxNzI3Mzk1MzU3fQ.hoyCqp-8j6mgCNahufwF8UsFVoWfOGaaSzssq2xjtzo`
     const headers = new Headers()
     headers.append('Authorization', ` Bearer ${access_token}`)
     headers.append('Content-Type', 'application/json')
-    //myFetch(`${window.location.origin}/get-users`, 
-    //'GET', null, headers)
+    
+    const endpoint = `${window.location.origin}/get-users`;
 
-    const response = myFetch2(`${window.location.origin}/get-users`,
+    const response = myFetch2(endpoint,
       'GET',
       null,
-      headers)
-    console.log(`Console response ${response}`)
+      headers)    
 
   }
 
   async function displayUsersTable(users) {
     console.log(users)
     if (users.length > 0) {
-      //for(let x in users){
-      //  console.log(users[x])
-      //}
-
+    
       let content = `
   <h2 class="display-6 text-center mb-4">Compare plans</h2>
   <div class="table-responsive">
@@ -434,7 +434,7 @@
     }
   }
 
-
-</script>
+  displayUsers()
+</script>-->
 
 </html>
