@@ -10,35 +10,15 @@ app.config['SECRET_KEY']  = secrets.token_hex()
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 900 # Expires after 15 minutes
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = 86400 # expires after 1 day
 
-
+# JWTManager to initialize the library
 jwt = JWTManager(app)
 
-
+# creating the blocklist for the tokens
 from blocklist import BLOCKLIST
 
-class User(object):
-    users = [
-            {"id": 1, "username": "email@test.com", "password": '1234', "name": "David Nicalson"},
-            {"id": 2, "username": "email@test.com", "password": '1234', "name": "Marks Palm"},
-        ]
-    
-    def create(self,user):
-        if user:
-            self.users.append(user)
-    
-    def get(self):
-        return self.users
-    
-    def login(self, username, password):
-        if not username:
-            return "Username is required"
-        elif not password:
-            return "Password  is required"
-        
-        return next((user for user in self.get() if user['username'] == username and user['password'] == password), None)
-        
+from user import User
 
-            
+     
 
 
 @jwt.token_in_blocklist_loader
@@ -66,7 +46,7 @@ def login():
     if is_logged:
         access_token = create_access_token(identity=username)
     
-    return jsonify({"is_logged": is_logged, "access_token": access_token, "user": login}), 401
+    return jsonify({"is_logged": is_logged, "access_token": access_token, "user": login}), 200
 
 # Logout method 
 @app.route('/logout', methods=['POST'])

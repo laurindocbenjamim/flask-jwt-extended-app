@@ -51,7 +51,7 @@ function displayUsersTable(users) {
   if (users.length > 0) {
   
     let content = `
-<h2 class="display-6 text-center mb-4">Compare plans</h2>
+<h2 class="display-6 text-center mb-4">List of users</h2>
 <div class="table-responsive">
   <table class="table text-center">
     <thead>
@@ -71,7 +71,7 @@ function displayUsersTable(users) {
         <td>${users[x].id}</td>
         <td>${users[x].name}</td>
         <td>${users[x].username}</td>
-        <td>${users[x].password}</td>
+        <td>${users[x].role}</td>
       </tr>
 `;
     }
